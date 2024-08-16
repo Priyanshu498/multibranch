@@ -21,7 +21,7 @@ pipeline {
                 }
             }
             steps {
-                echo "Hello"
+                echo "Hello buddy !!"
                
             }
         }
