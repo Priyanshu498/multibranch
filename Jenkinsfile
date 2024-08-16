@@ -1,9 +1,24 @@
 pipeline {
     agent any
     stages {
-        stage('a') {
+        stage('First') {
             steps {
-                echo "main Branch"
+                echo "This is 1st stage"
+            }
+        }
+        stage('Second') {
+            steps {
+                echo "This is 2nd stage"
+            }
+        }
+        stage('Third') {
+            steps {
+                echo "This is 3rd stage"
+            }
+        }
+        stage('Fourth') {
+            steps {
+                echo "This is 4th stage"
             }
         }
     }
