@@ -1,0 +1,28 @@
+---
+- name: Manage Tasks
+  hosts: web
+  vars_files:
+    - ../vars/main.yml  # Adjust the path if necessary
+
+  tasks:
+    - name: Ensure the task script exists
+      copy:
+        src: "{{ script_path }}"
+        dest: "/usr/local/bin/{{ task_name }}.sh"
+        mode: '0755'
+
+    - name: Schedule cron job for the task
+      cron:
+        name: "{{ task_name }}"
+        minute: "0"
+        hour: "0"
+        job: "/usr/local/bin/{{ task_name }}.sh >> /var/log/{{ task_name }}.log 2>&1"
+        state: present
+
+    - name: Send email notification
+      mail:
+        host: smtp.example.com  # Replace with your SMTP server
+        to: "{{ notification_email }}"
+        subject: "Task '{{ task_name }}' executed"
+        body: "Task '{{ task_name }}' has been scheduled."
+

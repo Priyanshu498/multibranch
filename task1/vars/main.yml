@@ -1,0 +1,5 @@
+# vars/main.yml
+task_name: "Backup"
+script_path: "/path/to/backup_script.sh"
+notification_email: "recipient@example.com"
+

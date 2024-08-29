@@ -1,0 +1,64 @@
+---
+# tasks file for task1
+
+- name: Task Management Utility
+  hosts: web
+  become: true
+
+  vars:
+    tasks:
+      - name: "Backup"
+        script_path: "scripts/backup_script.sh"  # Updated to correct path
+        task_type: "Scheduled"
+        cron_expression: "* * * * *"
+        notification_email: "recipient@example.com"
+      - name: "Cleanup"
+        script_path: "scripts/cleanup_script.sh"  # Updated to correct path
+        task_type: "Manual"
+        notification_email: "recipient@example.com"
+
+  tasks:
+    - name: Ensure the task script exists
+      copy:
+        src: "{{ item.script_path }}"
+        dest: "/usr/local/bin/{{ item.name }}.sh"
+        mode: '0755'
+      with_items: "{{ tasks }}"
+
+    - name: Schedule cron jobs for scheduled tasks
+      cron:
+        name: "{{ item.name }}"
+        minute: "{{ item.cron_expression.split(' ')[0] }}"
+        hour: "{{ item.cron_expression.split(' ')[1] }}"
+        day: "{{ item.cron_expression.split(' ')[2] }}"
+        month: "{{ item.cron_expression.split(' ')[3] }}"
+        weekday: "{{ item.cron_expression.split(' ')[4] }}"
+        job: "/usr/local/bin/{{ item.name }}.sh >> /var/log/{{ item.name }}.log 2>&1"
+        state: present
+      when: item.task_type == "Scheduled"
+      with_items: "{{ tasks }}"
+
+    - name: Execute manual tasks
+      command: "/usr/local/bin/{{ item.name }}.sh"
+      when: item.task_type == "Manual"
+      with_items: "{{ tasks }}"
+      register: task_output
+
+    - name: Send email notification for successful execution
+      mail:
+        host: smtp.example.com  # Replace with your SMTP server
+        to: "{{ item.notification_email }}"
+        subject: "Task '{{ item.name }}' succeeded"
+        body: "Task '{{ item.name }}' executed successfully."
+      when: task_output.results[item.index].rc == 0
+      with_items: "{{ tasks }}"
+
+    - name: Send email notification for failed execution
+      mail:
+        host: smtp.example.com  # Replace with your SMTP server
+        to: "{{ item.notification_email }}"
+        subject: "Task '{{ item.name }}' failed"
+        body: "Task '{{ item.name }}' failed with error."
+      when: task_output.results[item.index].rc != 0
+      with_items: "{{ tasks }}"
+
