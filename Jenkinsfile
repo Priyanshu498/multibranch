@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('One') {
             steps {
-                echo 'Hi, this is Ansh '
+                echo 'Hi, this is Priyanshu '
             }
         }
 
