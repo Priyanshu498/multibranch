@@ -35,14 +35,7 @@ To implement canary deployment, you need to have the capability to route a porti
 
 ## Flow Diagram
 
-
-graph TD
-    A[Deploy v2.0 to 5% of users (Canary group)] --> B[Monitor and analyze]
-    B --> C[Increase deployment to 25% of users]
-    C --> D[Increase deployment to 50% of users]
-    D --> E[Increase deployment to 75% of users]
-    E --> F[Roll out to 100% of users after validation]
-    B --> G[Rollback to v1.0 if issues are detected]
+![Uploading image.png…]()
 
 
 ## Advantages of Canary Deployment
