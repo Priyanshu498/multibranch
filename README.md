@@ -34,17 +34,17 @@ To implement canary deployment, you need to have the capability to route a porti
 4. **Full Deployment**: Once confidence is gained, roll out the new version to all users.
 
 ## Flow Diagram
-## Flow Diagram
+
 ```mermaid
 graph TD
     A[Deploy v2.0 to 5% of users (Canary group)] --> B[Monitor and analyze]
-    B --> C[Incrementally increase to 25%]
-    C --> D[Incrementally increase to 50%]
-    D --> E[Incrementally increase to 75%]
-    E --> F[Roll out to 100% after validation]
+    B --> C[Increase deployment to 25% of users]
+    C --> D[Increase deployment to 50% of users]
+    D --> E[Increase deployment to 75% of users]
+    E --> F[Roll out to 100% of users after validation]
     B --> G[Rollback to v1.0 if issues are detected]
-```
 
+```
 
 ## Advantages of Canary Deployment
 
