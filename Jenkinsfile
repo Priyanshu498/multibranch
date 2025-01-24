@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('One') {
             steps {
-                echo 'Hi, this is Priyanshu '
+                echo 'Hi, this is Snaatak Team '
             }
         }
 
@@ -21,7 +21,7 @@ pipeline {
                 
             }
             steps {
-                echo "Hello buddy !!"
+                echo "Hello Ninja-batch-29 !!"
                
             }
         }
